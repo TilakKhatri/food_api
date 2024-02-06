@@ -1,9 +1,22 @@
-import express, { Express, Request, Response } from "express";
+import express from "express";
+import {
+  GetVendorProfile,
+  UpdateVendorProfile,
+  VendorLogin,
+} from "../controllers/Vendorcontrollers";
+import { checkAuth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/vendor", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+router.post("/login", VendorLogin);
+
+router.use(checkAuth);
+
+// @DESC vendor's responsibilities
+
+// router.post("/food",)
+
+router.get("/profile", GetVendorProfile);
+router.patch("/profile", UpdateVendorProfile);
 
 export { router as Vendorroutes };

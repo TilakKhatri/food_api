@@ -8,3 +8,10 @@ export interface CreateVendorInput {
   email: string;
   password: string;
 }
+
+export interface EditVendorInput {
+  name: string;
+  address: string;
+  phone: string;
+  foodType: [string];
+}

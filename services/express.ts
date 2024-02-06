@@ -20,7 +20,7 @@ async function ExpressApp(app: Application) {
     res.send("Express + TypeScript Server");
   });
   app.use("/admin", upload.none(), Adminroutes);
-  app.use("", Vendorroutes);
+  app.use("/vendor", upload.none(), Vendorroutes);
 }
 
 export default ExpressApp;
