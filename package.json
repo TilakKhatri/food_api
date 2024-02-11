@@ -2,7 +2,7 @@
   "name": "food_api",
   "version": "1.0.0",
   "description": "1. Admin 2. Vendor 3. Customer 4. Shopping 5. Delivery",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
     "start": "node index.ts",
