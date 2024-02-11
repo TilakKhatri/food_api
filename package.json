@@ -4,8 +4,8 @@
   "description": "1. Admin 2. Vendor 3. Customer 4. Shopping 5. Delivery",
   "main": "index.ts",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node index.ts",
+    "build": "npm install typescript && npx tsc",
+    "start": "node --es-module-specifier-resolution=node ./dist/index.js",
     "dev": "nodemon --files index.ts"
   },
   "keywords": [],
