@@ -9,7 +9,7 @@ const setupDB = async () => {
   // console.log('I called',process.env.LOCAL_MONGO_URI)
   try {
     mongoose
-      .connect(process.env.LOCAL_MONGO_URI)
+      .connect(process.env.REMOTE_MONGO_URI)
       .then(() => console.log(colors.green("Connected to MongoDB")))
       .catch((err: any) => console.error(colors.red("Connection error"), err));
   } catch (error) {
