@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const setupDB = async () => {
-  // console.log('I called',process.env.LOCAL_MONGO_URI)
+  // console.log('I called',process.env.REMOTE_MONGO_URI)
   try {
     mongoose
       .connect(process.env.REMOTE_MONGO_URI)

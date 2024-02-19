@@ -4,7 +4,11 @@ interface VendorDoc extends Document {
   name: string;
   ownerName: string;
   foodType: [string];
-  pincode: string;
+  pincode: {
+    type:string,
+    unique:true,
+    required:true,
+  };
   address: string;
   phone: string;
   email: string;
@@ -13,7 +17,7 @@ interface VendorDoc extends Document {
   serviceAvailable: boolean;
   coverImages: [string];
   rating: number;
-  // foods: any;
+  foods: [string];
   lat: number;
   lng: number;
 }

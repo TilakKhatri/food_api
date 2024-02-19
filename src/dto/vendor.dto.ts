@@ -15,3 +15,5 @@ export interface EditVendorInput {
   phone: string;
   foodType: [string];
 }
+
+

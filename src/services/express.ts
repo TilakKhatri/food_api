@@ -1,5 +1,6 @@
-import { Application, Express, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import bodyParser, { urlencoded } from "body-parser";
+import path from "path";
 import multer from "multer";
 
 import { Adminroutes } from "../routes/Adminroutes";
@@ -7,6 +8,7 @@ import { Vendorroutes } from "../routes/Vendorroutes";
 
 async function ExpressApp(app: Application) {
   // @DESC middleware setups
+  app.use(express.static("../../images"));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   const upload = multer();
@@ -16,11 +18,9 @@ async function ExpressApp(app: Application) {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
   });
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Express + TypeScript Server");
-  });
+
   app.use("/admin", upload.none(), Adminroutes);
-  app.use("/vendor", upload.none(), Vendorroutes);
+  app.use("/vendor", Vendorroutes);
 }
 
 export default ExpressApp;

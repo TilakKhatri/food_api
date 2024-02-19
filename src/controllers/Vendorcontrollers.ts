@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { IUserRequest, LoginInput } from "../dto/auth.dto";
 import { Vendor } from "../models/vendor";
 import { generateToken, passwordValidation } from "../utils";
-import { EditVendorInput } from "../dto/vendor.dto";
+import { CreateFoodInput, EditVendorInput } from "../dto";
+import { Food } from "../models/food";
+
 // import { passwordValidation } from "../utils";
 
 export const VendorLogin = async (
@@ -50,7 +52,7 @@ export const GetVendorProfile = async (
   next: NextFunction
 ) => {
   const user = req.user;
-  console.log("user from profile", req.user);
+  // console.log("user from profile", req.user);
   if (user !== null) {
     const existingVendor = await Vendor.findById(user._id);
     return res.json(existingVendor);
@@ -93,5 +95,73 @@ export const UpdateVendorProfile = async (
     return res.json({ message: "Unable to Update vendor profile " });
   } catch (error: any) {
     return res.status(411).json({ message: error.message });
+  }
+};
+
+export const AddFood = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
+
+  const { name, description, category, foodType, readyTime, price } = <
+    CreateFoodInput
+  >req.body;
+  try {
+    if (user !== null) {
+      const vendor = await Vendor.findById(user._id);
+      if (vendor !== null) {
+        const files = req.files as [Express.Multer.File];
+        const images = files.map((file: Express.Multer.File) => file.filename);
+
+        const food = await Food.create({
+          vendorId: vendor._id,
+          name,
+          category,
+          description,
+          price,
+          rating: 0,
+          readyTime,
+          foodType,
+          images,
+        });
+        vendor.foods.push(food._id);
+        const data = await vendor.save();
+        return res.status(201).json({
+          message: "successfully added",
+          status: 201,
+          data,
+        });
+      }
+    }
+  } catch (err: any) {
+    res.json({
+      message: "Internal Error",
+      error: err.message,
+    });
+  }
+};
+
+export const getFoods = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // check user is present or not
+    const user = req.user;
+    if (user !== null) {
+      const foods = await Food.find({ vendorId: user._id });
+      if (foods !== null) {
+        return res.json(foods);
+      }
+      return res.status(404).json({ message: "Foods not found" });
+    }
+  } catch (err: any) {
+    return res.status(500).json({
+      message: "Internal error",
+      error: err.message,
+    });
   }
 };
