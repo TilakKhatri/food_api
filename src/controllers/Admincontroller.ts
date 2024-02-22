@@ -50,6 +50,7 @@ export const GetVendors = async (
 ) => {
   try {
     const vendors = await Vendor.find({});
+    console.log("vendors", vendors);
     if (vendors !== null) {
       return res.status(200).json({
         success: true,
@@ -59,7 +60,7 @@ export const GetVendors = async (
 
     return res.json({ message: "Vendors data not available" });
   } catch (err: any) {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: err.message,
     });

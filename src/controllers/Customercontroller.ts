@@ -103,3 +103,84 @@ export const CustomerLogin = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const CustomerVerification = async (req: Request, res: Response) => {
+  try {
+    const { otp } = req.body;
+    const customer = req.user;
+
+    if (customer) {
+      const profile = await Customer.findById(customer._id);
+      if (profile) {
+        if (profile.otp === parseInt(otp) && profile.otp_expiry >= new Date()) {
+          profile.verified = true;
+
+          const updatedCustomerResponse = await profile.save();
+
+          const signature = generateToken({
+            _id: updatedCustomerResponse._id,
+            email: updatedCustomerResponse.email,
+            verified: updatedCustomerResponse.verified,
+          });
+
+          return res.status(200).json({
+            signature,
+            email: updatedCustomerResponse.email,
+            verified: updatedCustomerResponse.verified,
+          });
+        }
+      }
+    }
+
+    return res.status(400).json({ msg: "Unable to verify Customer" });
+  } catch (err: any) {
+    return res.status(500).json({
+      message: "Internal error",
+      error: err.message,
+    });
+  }
+};
+
+export const GetCustomerProfile = async (req: Request, res: Response) => {
+  try {
+    const customer = req.user;
+
+    if (customer) {
+      const profile = await Customer.findById(customer._id);
+
+      if (profile) {
+        return res.status(201).json(profile);
+      }
+    }
+    return res.status(400).json({ msg: "Error while Fetching Profile" });
+  } catch (err: any) {
+    return res.status(500).json({
+      message: "Internal error",
+      error: err.message,
+    });
+  }
+};
+
+export const EditCustomerProfile = async (req: Request, res: Response) => {
+  try {
+    const customer = req.user;
+    const { firstName, lastName, address } = req.body;
+    if (customer) {
+      const updatedResult = await Customer.findByIdAndUpdate(customer._id, {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+      });
+      return res.status(200).json({
+        message: "successfully updated",
+        updatedResult,
+      });
+    }
+    return res.status(400).json({ msg: "Error while Updating Profile" });
+  } catch (err: any) {
+    return res.status(500).json({
+      message: "Internal error",
+      error: err.message,
+    });
+  }
+};

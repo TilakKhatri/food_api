@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { tokenPayload } from "../dto/token.dto";
 
 // dotenv.config();
-export const APP_SECRET = "HELLO  ";
+export const APP_SECRET = "HELLO ";
 export const generatePassword = async (password: string) => {
   return await bcrypt.hash(password, 10);
 };
