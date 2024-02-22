@@ -2,9 +2,7 @@ import express, { Application, Request, Response } from "express";
 import bodyParser, { urlencoded } from "body-parser";
 import path from "path";
 import multer from "multer";
-
-import { Adminroutes } from "../routes/Adminroutes";
-import { Vendorroutes } from "../routes/Vendorroutes";
+import { Adminroutes, Customerroutes, Vendorroutes } from "../routes";
 
 async function ExpressApp(app: Application) {
   // @DESC middleware setups
@@ -21,6 +19,7 @@ async function ExpressApp(app: Application) {
 
   app.use("/admin", upload.none(), Adminroutes);
   app.use("/vendor", Vendorroutes);
+  app.use("/customer", upload.none(), Customerroutes);
 }
 
 export default ExpressApp;

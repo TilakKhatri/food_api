@@ -98,6 +98,31 @@ export const UpdateVendorProfile = async (
   }
 };
 
+export const updateVendorService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = req.user;
+    if (user) {
+      const existingVendor = await Vendor.findById(user._id);
+      if (existingVendor !== null) {
+        // toggling serviceAvailable of vendor
+        existingVendor.serviceAvailable = !existingVendor.serviceAvailable;
+        const saveResult = await existingVendor.save();
+        return res.json(saveResult);
+      }
+      return res.json({ message: "Unable to Update available  service  " });
+    }
+  } catch (err: any) {
+    res.json({
+      message: "Internal Error",
+      error: err?.message,
+    });
+  }
+};
+
 export const AddFood = async (
   req: Request,
   res: Response,
@@ -165,3 +190,13 @@ export const getFoods = async (
     });
   }
 };
+
+/*
+@Remaining controllers
+1. getcurrentorders
+2. getorderdetails
+3. process order
+4. get offers
+5. create new offers of customer
+6. edit offers
+*/

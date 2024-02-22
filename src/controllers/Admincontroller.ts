@@ -89,3 +89,11 @@ export const GetVendorById = async (
     });
   }
 };
+
+/*
+@ Desc Remaining functionalities
+1. Get transactions
+2. Get transactions by id
+3. Verify delivery users
+4. Get delivery users
+*/

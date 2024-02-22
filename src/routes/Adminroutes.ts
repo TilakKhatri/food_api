@@ -1,10 +1,5 @@
-import express, { Express, Request, Response } from "express";
-import {
-  CreateVendor,
-  GetVendorById,
-  GetVendors,
-} from "../controllers/Admincontroller";
-
+import express from "express";
+import { CreateVendor, GetVendors, GetVendorById } from "../controllers/index";
 const router = express.Router();
 
 router.post("/vendor", CreateVendor);
